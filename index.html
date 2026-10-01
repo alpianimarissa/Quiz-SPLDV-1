@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Interaktif SPLDV 15 Soal</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- MathJax Config & Library -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .quiz-option { transition: all 0.2s ease-in-out; }
+        .quiz-option:hover:not(:disabled) { transform: translateY(-1px); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header Navbar -->
+    <header class="bg-indigo-700 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-white text-indigo-700 w-10 h-10 rounded-xl flex items-center justify-center shadow-md shrink-0">
+                    <i class="fa-solid fa-square-root-variable text-xl text-indigo-700"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg sm:text-xl font-extrabold tracking-tight">Kuis Interaktif SPLDV</h1>
+                    <p class="text-xs text-indigo-200">15 Variasi Soal & Pembahasan Lengkap</p>
+                </div>
+            </div>
+            <div>
+                <button onclick="resetQuiz()" class="px-3 py-1.5 bg-indigo-800 hover:bg-indigo-600 text-white rounded-xl text-xs font-medium transition flex items-center gap-1.5 border border-indigo-500">
+                    <i class="fa-solid fa-rotate-right"></i> Reset Kuis
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-6 flex-grow w-full space-y-6">
+
+        <!-- Scorecard & Status Ringkasan -->
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-graduation-cap text-indigo-600"></i> Evaluasi Kemampuan SPLDV
+                </h2>
+                <p class="text-xs text-slate-500 mt-1">Uji pemahaman kamu terhadap 15 teknik & strategi penyelesaian SPLDV.</p>
+            </div>
+            
+            <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                <div class="bg-indigo-50 border border-indigo-200 px-5 py-2.5 rounded-xl text-center w-full sm:w-auto">
+                    <span class="text-xs text-slate-500 font-semibold uppercase block">Skor Akhir</span>
+                    <span id="score-display" class="text-2xl font-black text-indigo-700">0 / 15</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar Indicator -->
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2">
+            <div class="flex justify-between items-center text-xs font-semibold text-slate-600">
+                <span id="progress-text">Progres Pengerjaan: 0 dari 15 Soal</span>
+                <span id="progress-percent" class="text-indigo-600 font-bold">0%</span>
+            </div>
+            <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                <div id="progress-bar" class="bg-indigo-600 h-full w-0 transition-all duration-300"></div>
+            </div>
+        </div>
+
+        <!-- Quiz Questions Container -->
+        <div id="quiz-list" class="space-y-6">
+            <!-- Diberikan secara dinamis via JavaScript -->
+        </div>
+
+    </main>
+
+    <footer class="bg-slate-800 text-slate-400 text-center py-4 text-xs mt-auto border-t border-slate-700">
+        <p>Kuis Interaktif Matematika &bull; Sistem Persamaan Linear Dua Variabel (SPLDV)</p>
+    </footer>
+
+    <script>
+        // DATABASE 15 SOAL KUIS DENGAN TEKNIK PENGERJAAN BERBEDA
+        const questionsData = [
+            {
+                id: 1,
+                technique: "Metode Substitusi (Koefisien Variabel = 1)",
+                question: "Diberikan $x + 2y = 10$ dan $2x - y = 5$. Berapakah himpunan penyelesaian $(x, y)$?",
+                options: [
+                    { label: "A", text: "(4, 3)" },
+                    { label: "B", text: "(3, 4)" },
+                    { label: "C", text: "(2, 4)" },
+                    { label: "D", text: "(5, 2)" }
+                ],
+                correct: "A",
+                hint: "Isolasi x dari persamaan pertama menjadi $x = 10 - 2y$, lalu ganti x pada persamaan kedua.",
+                explanation: "<strong>Langkah Substitusi:</strong><br>1) Dari pers (1): $x = 10 - 2y$<br>2) Ganti ke pers (2): $2(10 - 2y) - y = 5 \\implies 20 - 4y - y = 5 \\implies -5y = -15 \\implies y = 3$<br>3) Cari x: $x = 10 - 2(3) = 4$. HP = {(4, 3)}."
+            },
+            {
+                id: 2,
+                technique: "Eliminasi Langsung Penjumlahan (Koefisien Berlawanan Tanda)",
+                question: "Selesaikan SPLDV berikut dengan eliminasi paling cepat: $3x + y = 14$ dan $2x - y = 6$. Nilai $x$ adalah...",
+                options: [
+                    { label: "A", text: "x = 3" },
+                    { label: "B", text: "x = 4" },
+                    { label: "C", text: "x = 5" },
+                    { label: "D", text: "x = 2" }
+                ],
+                correct: "B",
+                hint: "Perhatikan koefisien y (+1 dan -1). Kamu tidak perlu mengalikan persamaan dengan angka apapun!",
+                explanation: "<strong>Langkah Eliminasi Penjumlahan:</strong><br>Karena koefisien $y$ berlawanan tanda (+y dan -y), langsung jumlahkan kedua persamaan:<br>$(3x + y) + (2x - y) = 14 + 6 \\implies 5x = 20 \\implies x = 4$."
+            },
+            {
+                id: 3,
+                technique: "Eliminasi Langsung Pengurangan (Koefisien Persis Sama)",
+                question: "Diberikan $2x + 5y = 19$ dan $2x + 3y = 13$. Nilai $y$ yang memenuhi adalah...",
+                options: [
+                    { label: "A", text: "y = 2" },
+                    { label: "B", text: "y = 3" },
+                    { label: "C", text: "y = 4" },
+                    { label: "D", text: "y = 1" }
+                ],
+                correct: "B",
+                hint: "Koefisien x pada kedua persamaan sudah sama yaitu 2. Kurangkan kedua persamaan langsung.",
+                explanation: "<strong>Langkah Eliminasi Pengurangan:</strong><br>Kurangkan pers (1) dengan pers (2):<br>$(2x + 5y) - (2x + 3y) = 19 - 13 \\implies 2y = 6 \\implies y = 3$."
+            },
+            {
+                id: 4,
+                technique: "Metode Campuran (Menyamakan Koefisien KPK)",
+                question: "Tentukan nilai $(x, y)$ untuk sistem persamaan $3x + 2y = 12$ dan $2x + 3y = 13$!",
+                options: [
+                    { label: "A", text: "(3, 2)" },
+                    { label: "B", text: "(2, 3)" },
+                    { label: "C", text: "(1, 4)" },
+                    { label: "D", text: "(4, 1)" }
+                ],
+                correct: "B",
+                hint: "Samakan koefisien x menjadi 6 dengan mengalikan Persamaan (1) dikali 2 dan Persamaan (2) dikali 3.",
+                explanation: "<strong>Langkah Campuran:</strong><br>1) Pers (1) $\\times 2 \\implies 6x + 4y = 24$<br>2) Pers (2) $\\times 3 \\implies 6x + 9y = 39$<br>3) Dikurangkan: $-5y = -15 \\implies y = 3$<br>4) Substitusi $y=3$ ke pers (1): $3x + 2(3) = 12 \\implies 3x = 6 \\implies x = 2$. HP = {(2, 3)}."
+            },
+            {
+                id: 5,
+                technique: "Soal Cerita Belanja (Model Matematika & Campuran)",
+                question: "Harga 3 buku dan 2 pensil adalah Rp 13.000. Harga 2 buku dan 5 pensil adalah Rp 16.000. Harga 1 buku dan 1 pensil adalah...",
+                options: [
+                    { label: "A", text: "Rp 4.000" },
+                    { label: "B", text: "Rp 4.500" },
+                    { label: "C", text: "Rp 5.000" },
+                    { label: "D", text: "Rp 5.500" }
+                ],
+                correct: "C",
+                hint: "Buat pemisalan buku = x dan pensil = y. Cari harga masing-masing lalu jumlahkan (x + y).",
+                explanation: "<strong>Model Matematika:</strong><br>(1) $3x + 2y = 13.000$<br>(2) $2x + 5y = 16.000$<br>Eliminasi x (kali 2 dan kali 3):<br>$6x + 4y = 26.000$<br>$6x + 15y = 48.000$<br>Dikurangkan: $-11y = -22.000 \\implies y = 2.000$ (pensil).<br>Substitusi $y=2000 \\implies 3x + 4000 = 13000 \\implies 3x = 9000 \\implies x = 3.000$ (buku).<br>Harga 1 buku + 1 pensil = $3.000 + 2.000 =$ Rp 5.000."
+            },
+            {
+                id: 6,
+                technique: "Penyederhanaan SPLDV Bentuk Pecahan",
+                question: "Diberikan SPLDV pecahan $\\frac{x}{2} + \\frac{y}{3} = 3$ dan $x - y = 1$. Nilai $x$ dan $y$ berturut-turut adalah...",
+                options: [
+                    { label: "A", text: "x = 4 dan y = 3" },
+                    { label: "B", text: "x = 5 dan y = 4" },
+                    { label: "C", text: "x = 3 dan y = 2" },
+                    { label: "D", text: "x = 6 dan y = 5" }
+                ],
+                correct: "A",
+                hint: "Kalikan persamaan pertama dengan 6 (KPK penyebut 2 dan 3) agar hilang pecahan.",
+                explanation: "<strong>Penyederhanaan Bentuk Pecahan:</strong><br>1) Kalikan pers (1) dengan 6: $3x + 2y = 18$<br>2) Dari pers (2): $x = y + 1$<br>3) Substitusikan: $3(y + 1) + 2y = 18 \\implies 5y + 3 = 18 \\implies 5y = 15 \\implies y = 3$<br>4) Maka $x = 3 + 1 = 4$."
+            },
+            {
+                id: 7,
+                technique: "Soal Cerita Umur (Model Hubungan & Selisih)",
+                question: "Umur Ayah ($x$) saat ini adalah 4 kali umur Andi ($y$). Jika selisih umur mereka adalah 30 tahun, berapa umur Ayah?",
+                options: [
+                    { label: "A", text: "36 tahun" },
+                    { label: "B", text: "40 tahun" },
+                    { label: "C", text: "45 tahun" },
+                    { label: "D", text: "48 tahun" }
+                ],
+                correct: "B",
+                hint: "Gunakan hubungan $x = 4y$ dan $x - y = 30$. Substitusikan nilai x.",
+                explanation: "<strong>Penyelesaian Soal Umur:</strong><br>1) Pers (1): $x = 4y$<br>2) Pers (2): $x - y = 30$<br>3) Substitusi $x = 4y$ ke pers (2): $4y - y = 30 \\implies 3y = 30 \\implies y = 10$ (Umur Andi).<br>4) Umur Ayah ($x$) = $4 \\times 10 = 40$ tahun."
+            },
+            {
+                id: 8,
+                technique: "Menghitung Nilai Bentuk Aljabar (misal 2x + 3y)",
+                question: "Jika $x + y = 7$ dan $x - y = 3$, maka nilai dari $2x + 3y$ adalah...",
+                options: [
+                    { label: "A", text: "16" },
+                    { label: "B", text: "18" },
+                    { label: "C", text: "14" },
+                    { label: "D", text: "20" }
+                ],
+                correct: "A",
+                hint: "Cari dulu nilai x dan y dengan penjumlahan dan pengurangan langsung kedua persamaan.",
+                explanation: "<strong>Hitung Solusi Dulu:</strong><br>1) Jumlahkan: $2x = 10 \\implies x = 5$<br>2) Kurangkan: $2y = 4 \\implies y = 2$<br>3) Hitung $2x + 3y = 2(5) + 3(2) = 10 + 6 = 16$."
+            },
+            {
+                id: 9,
+                technique: "Evaluasi Efisiensi Strategi Pemilihan Metode",
+                question: "Pada SPLDV $4x - y = 9$ dan $3x + 5y = 11$, manakah langkah pertama yang PALING efisien?",
+                options: [
+                    { label: "A", text: "Mengisolasi y = 4x - 9 lalu substitusi ke persamaan kedua" },
+                    { label: "B", text: "Mengalikan persamaan pertama dengan 3 dan kedua dengan 4" },
+                    { label: "C", text: "Mengubah menjadi grafik kartesius manual" },
+                    { label: "D", text: "Menebak angka x dan y satu per satu" }
+                ],
+                correct: "A",
+                hint: "Lihat koefisien variabel y pada persamaan pertama yang bernilai -1.",
+                explanation: "<strong>Analisis Efisiensi:</strong><br>Karena koefisien $y$ pada persamaan pertama adalah $-1$, kita bisa sangat mudah mengisolasi $y = 4x - 9$ tanpa menghasilkan angka pecahan sedikitpun. Ini lebih cepat daripada metode eliminasi."
+            },
+            {
+                id: 10,
+                technique: "Identifikasi SPLDV Tanpa Penyelesaian (Garis Sejajar)",
+                question: "Berapakah banyaknya pasangan penyelesaian $(x, y)$ untuk SPLDV $2x + 4y = 8$ dan $x + 2y = 10$?",
+                options: [
+                    { label: "A", text: "Tepat satu penyelesaian" },
+                    { label: "B", text: "Tidak memiliki penyelesaian (0)" },
+                    { label: "C", text: "Tak terhingga banyaknya penyelesaian" },
+                    { label: "D", text: "Dua penyelesaian berbeda" }
+                ],
+                correct: "B",
+                hint: "Kalikan persamaan kedua dengan 2, lalu amati bagian koefisien x dan y dibandingkan konstantanya.",
+                explanation: "<strong>Analisis Garis Sejajar:</strong><br>Persamaan (2) jika dikali 2 menjadi $2x + 4y = 20$.<br>Bandingkan dengan Persamaan (1): $2x + 4y = 8$.<br>Pernyataan $2x + 4y$ tidak mungkin bernilai 8 sekaligus 20 bersamaan. Kedua garis sejajar, sehingga <strong>tidak ada penyelesaian</strong>."
+            },
+            {
+                id: 11,
+                technique: "Soal Cerita Geometri (Keliling & Luas Persegi Panjang)",
+                question: "Keliling persegi panjang adalah 28 cm. Panjangnya ($x$) 2 cm lebih dari lebarnya ($y$). Luas persegi panjang tersebut adalah...",
+                options: [
+                    { label: "A", text: "40 cm²" },
+                    { label: "B", text: "48 cm²" },
+                    { label: "C", text: "54 cm²" },
+                    { label: "D", text: "36 cm²" }
+                ],
+                correct: "B",
+                hint: "Keliling = $2x + 2y = 28 \\implies x + y = 14$. Hubungan panjang-lebar: $x - y = 2$.",
+                explanation: "<strong>Sistem Persamaan Geometri:</strong><br>(1) $x + y = 14$<br>(2) $x - y = 2$<br>Jumlahkan: $2x = 16 \\implies x = 8$ cm (panjang).<br>Maka $y = 6$ cm (lebar).<br>Luas = $x \\times y = 8 \\times 6 = 48\\text{ cm}^2$."
+            },
+            {
+                id: 12,
+                technique: "Soal Cerita Tarif Parkir Kendaraan",
+                question: "Tarif parkir 1 mobil ($x$) dan 4 motor ($y$) adalah Rp 14.000. Tarif 2 mobil dan 3 motor adalah Rp 13.000. Tarif 1 mobil dan 1 motor adalah...",
+                options: [
+                    { label: "A", text: "Rp 5.000" },
+                    { label: "B", text: "Rp 6.000" },
+                    { label: "C", text: "Rp 7.000" },
+                    { label: "D", text: "Rp 8.000" }
+                ],
+                correct: "A",
+                hint: "Gunakan $x = 14000 - 4y$ dari persamaan pertama lalu substitusi ke persamaan kedua.",
+                explanation: "<strong>Substitusi Soal Tarif:</strong><br>(1) $x + 4y = 14.000 \\implies x = 14.000 - 4y$<br>(2) $2x + 3y = 13.000$<br>Substitusi: $2(14.000 - 4y) + 3y = 13.000 \\implies 28.000 - 5y = 13.000 \\implies 5y = 15.000 \\implies y = 3.000$ (motor).<br>Substitusi $y=3000 \\implies x = 14.000 - 12.000 = 2.000$ (mobil).<br>Tarif 1 mobil + 1 motor = $2.000 + 3.000 =$ Rp 5.000."
+            },
+            {
+                id: 13,
+                technique: "Eliminasi Penentuan Variabel Sasaran Tercepat",
+                question: "Diberikan $5x + 2y = 19$ dan $3x + 2y = 13$. Manakah langkah yang langsung memberikan nilai $x$?",
+                options: [
+                    { label: "A", text: "Mengurangkan persamaan (1) dengan persamaan (2)" },
+                    { label: "B", text: "Menjumlahkan kedua persamaan" },
+                    { label: "C", text: "Mengalikan persamaan (1) dengan 3" },
+                    { label: "D", text: "Membagi kedua persamaan dengan 2" }
+                ],
+                correct: "A",
+                hint: "Perhatikan koefisien variabel y pada kedua persamaan yang sama-sama bernilai +2.",
+                explanation: "<strong>Langsung Eliminasi Pengurangan:</strong><br>Karena koefisien $y$ sudah sama (+2y dan +2y), mengurangkan (1) dengan (2) langsung mengeliminasi $y$:<br>$(5x - 3x) = 19 - 13 \\implies 2x = 6 \\implies x = 3$."
+            },
+            {
+                id: 14,
+                technique: "Menentukan Nilai Konstanta Tak Diketahui (a + b)",
+                question: "Pasangan $(x, y) = (2, -1)$ adalah penyelesaian dari $ax + 3y = 1$ dan $2x + by = 8$. Nilai $a + b$ adalah...",
+                options: [
+                    { label: "A", text: "-2" },
+                    { label: "B", text: "-1" },
+                    { label: "C", text: "2" },
+                    { label: "D", text: "4" }
+                ],
+                correct: "A",
+                hint: "Masukkan nilai x = 2 dan y = -1 ke masing-masing persamaan untuk menemukan nilai a dan b.",
+                explanation: "<strong>Substitusi Solusi ke Parameter:</strong><br>1) Pers (1): $a(2) + 3(-1) = 1 \\implies 2a - 3 = 1 \\implies 2a = 4 \\implies a = 2$<br>2) Pers (2): $2(2) + b(-1) = 8 \\implies 4 - b = 8 \\implies b = -4$<br>3) Maka $a + b = 2 + (-4) = -2$."
+            },
+            {
+                id: 15,
+                technique: "Penyederhanaan SPLDV Bentuk Distribusi (Buka Kurung)",
+                question: "Selesaikan SPLDV bentuk kurung: $2(x - 1) + y = 5$ dan $x + 2(y + 1) = 10$. Nilai $(x, y)$ adalah...",
+                options: [
+                    { label: "A", text: "(2, 3)" },
+                    { label: "B", text: "(3, 2)" },
+                    { label: "C", text: "(1, 5)" },
+                    { label: "D", text: "(4, 1)" }
+                ],
+                correct: "A",
+                hint: "Jabarkan dulu tanda kurungnya: $2x - 2 + y = 5 \\implies 2x + y = 7$.",
+                explanation: "<strong>Buka Tanda Kurung Dahulu:</strong><br>1) Pers (1): $2x - 2 + y = 5 \\implies 2x + y = 7 \\implies y = 7 - 2x$<br>2) Pers (2): $x + 2y + 2 = 10 \\implies x + 2y = 8$<br>3) Substitusikan $y$: $x + 2(7 - 2x) = 8 \\implies x + 14 - 4x = 8 \\implies -3x = -6 \\implies x = 2$<br>4) Maka $y = 7 - 2(2) = 3$. HP = {(2, 3)}."
+            }
+        ];
+
+        // MANAJEMEN STATE KUIS
+        let userAnswers = {};
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-list');
+            container.innerHTML = '';
+
+            questionsData.forEach((q) => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4";
+                
+                card.innerHTML = `
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-slate-100 pb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-7 h-7 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-black">${q.id}</span>
+                            <span class="text-xs font-bold text-slate-800">Soal Nomor ${q.id} dari 15</span>
+                        </div>
+                        <span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 text-xs font-medium rounded-full border border-indigo-100 flex items-center gap-1.5 self-start sm:self-auto">
+                            <i class="fa-solid fa-code-branch text-indigo-500"></i> ${q.technique}
+                        </span>
+                    </div>
+
+                    <p class="text-sm font-semibold text-slate-800 leading-relaxed">${q.question}</p>
+
+                    <div class="grid sm:grid-cols-2 gap-2.5 text-xs">
+                        ${q.options.map(opt => `
+                            <button onclick="selectAnswer(${q.id}, '${opt.label}')" id="opt-${q.id}-${opt.label}" 
+                                class="quiz-option text-left p-3 rounded-xl border border-slate-200 hover:bg-slate-50 flex items-center gap-2.5 font-medium">
+                                <span class="w-6 h-6 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-xs shrink-0">${opt.label}</span>
+                                <span class="leading-snug">${opt.text}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <div class="flex justify-between items-center pt-2">
+                        <button onclick="toggleHint(${q.id})" class="text-xs text-amber-700 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5 border border-amber-200">
+                            <i class="fa-solid fa-lightbulb text-amber-500"></i> Petunjuk Trik
+                        </button>
+                    </div>
+
+                    <div id="hint-${q.id}" class="hidden text-xs bg-amber-50/80 text-amber-900 p-3.5 rounded-xl border border-amber-200 leading-relaxed">
+                        <strong><i class="fa-solid fa-circle-info mr-1"></i>Petunjuk Pengerjaan:</strong> ${q.hint}
+                    </div>
+
+                    <div id="feedback-${q.id}" class="hidden text-xs p-3.5 rounded-xl space-y-2"></div>
+                `;
+                container.appendChild(card);
+            });
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise();
+            }
+        }
+
+        function selectAnswer(qId, choice) {
+            userAnswers[qId] = choice;
+            const qData = questionsData.find(q => q.id === qId);
+            const isCorrect = choice === qData.correct;
+
+            // Highlight tombol pilihan
+            ['A', 'B', 'C', 'D'].forEach(label => {
+                const btn = document.getElementById(`opt-${qId}-${label}`);
+                btn.disabled = true;
+                btn.classList.remove('bg-emerald-100', 'border-emerald-500', 'bg-rose-100', 'border-rose-500', 'hover:bg-slate-50');
+                
+                if (label === qData.correct) {
+                    btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+                } else if (label === choice && !isCorrect) {
+                    btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900', 'font-bold');
+                } else {
+                    btn.classList.add('opacity-50');
+                }
+            });
+
+            // Tampilkan Feedback & Pembahasan
+            const fb = document.getElementById(`feedback-${qId}`);
+            fb.classList.remove('hidden', 'bg-emerald-50', 'bg-rose-50', 'text-emerald-900', 'text-rose-900', 'border-emerald-200', 'border-rose-200');
+            
+            if (isCorrect) {
+                fb.classList.add('bg-emerald-50', 'text-emerald-900', 'border', 'border-emerald-200');
+                fb.innerHTML = `
+                    <div class="font-bold flex items-center gap-1.5 text-emerald-700 text-xs">
+                        <i class="fa-solid fa-circle-check text-sm"></i> Jawaban Tepat Sekali!
+                    </div>
+                    <div class="text-slate-700 bg-white p-3 rounded-lg border border-emerald-100 mt-2 leading-relaxed">${qData.explanation}</div>
+                `;
+            } else {
+                fb.classList.add('bg-rose-50', 'text-rose-900', 'border', 'border-rose-200');
+                fb.innerHTML = `
+                    <div class="font-bold flex items-center gap-1.5 text-rose-700 text-xs">
+                        <i class="fa-solid fa-circle-xmark text-sm"></i> Belum Tepat. Jawaban yang benar adalah (${qData.correct}).
+                    </div>
+                    <div class="text-slate-700 bg-white p-3 rounded-lg border border-rose-100 mt-2 leading-relaxed">${qData.explanation}</div>
+                `;
+            }
+
+            updateScore();
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise();
+            }
+        }
+
+        function toggleHint(qId) {
+            const h = document.getElementById(`hint-${qId}`);
+            h.classList.toggle('hidden');
+        }
+
+        function updateScore() {
+            let correctCount = 0;
+            let answeredCount = Object.keys(userAnswers).length;
+
+            questionsData.forEach(q => {
+                if (userAnswers[q.id] === q.correct) correctCount++;
+            });
+
+            document.getElementById('score-display').innerText = `${correctCount} / 15`;
+
+            // Update Progress Bar
+            const percent = Math.round((answeredCount / 15) * 100);
+            document.getElementById('progress-text').innerText = `Progres Pengerjaan: ${answeredCount} dari 15 Soal`;
+            document.getElementById('progress-percent').innerText = `${percent}%`;
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+        }
+
+        function resetQuiz() {
+            userAnswers = {};
+            document.getElementById('score-display').innerText = `0 / 15`;
+            document.getElementById('progress-text').innerText = `Progres Pengerjaan: 0 dari 15 Soal`;
+            document.getElementById('progress-percent').innerText = `0%`;
+            document.getElementById('progress-bar').style.width = `0%`;
+            renderQuiz();
+        }
+
+        // INISIALISASI HALAMAN
+        window.onload = function() {
+            renderQuiz();
+        };
+    </script>
+</body>
+</html>
